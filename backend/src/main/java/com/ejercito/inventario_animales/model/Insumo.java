@@ -2,12 +2,19 @@ package com.ejercito.inventario_animales.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDate;
 
 @Data
 @Entity
 @Table(name = "insumos")
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Insumo {
 
     @Id

@@ -38,11 +38,20 @@ public class Usuario {
     @Size(min = 8, message = "La contraseña debe tener al menos 8 caracteres")
     private String contraseña;
 
-    @Column(name = "fecha_creacion")
+    @Builder.Default
+    @Column(name = "fecha_creacion", columnDefinition = "TIMESTAMP")
     private LocalDateTime fechaCreacion = LocalDateTime.now();
 
     @OneToMany(mappedBy = "responsable", cascade = CascadeType.ALL)
     private List<Animal> animales;
+
+    // Método para asignar la fecha de creación automáticamente antes de persistir
+    @PrePersist
+    public void prePersist() {
+        if (fechaCreacion == null) {
+                fechaCreacion = LocalDateTime.now();
+        }
+    }
 
     public enum Rol {
         ADMIN, VETERINARIO, ENCARGADO

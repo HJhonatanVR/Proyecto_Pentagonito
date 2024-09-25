@@ -2,18 +2,27 @@ package com.ejercito.inventario_animales.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import java.time.LocalDate;
+import lombok.NoArgsConstructor;
+import java.time.LocalDateTime;
+
+
+
 import java.util.List;
 
 @Data
 @Entity
 @Table(name = "animales")
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Animal {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long idAnimal;
 
     @NotNull(message = "El nombre del animal es obligatorio")
     @Size(min = 2, max = 100, message = "El nombre debe tener entre 2 y 100 caracteres")
@@ -33,8 +42,10 @@ public class Animal {
     @Enumerated(EnumType.STRING)
     private Estado estado;
 
+    @Builder.Default
     @NotNull(message = "La fecha de ingreso es obligatoria")
-    private LocalDate fechaIngreso;
+    @Column(name = "fecha_ingreso", columnDefinition = "TIMESTAMP")
+    private LocalDateTime fechaIngreso = LocalDateTime.now(); // Fecha por defecto al crear el objeto
 
     @ManyToOne
     @JoinColumn(name = "id_responsable", nullable = true)
@@ -44,10 +55,13 @@ public class Animal {
     private List<HistorialMedico> historialMedico;
 
     public enum Especie {
-        CABALLO, VACA, OTRO
+        CABALLO, PERRO, OTRO
     }
 
     public enum Estado {
         ACTIVO, INACTIVO
     }
+
+
+
 }

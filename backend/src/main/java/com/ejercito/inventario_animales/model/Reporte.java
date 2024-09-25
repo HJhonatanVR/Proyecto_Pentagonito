@@ -2,11 +2,18 @@ package com.ejercito.inventario_animales.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDateTime;
 
 @Data
 @Entity
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "reportes")
 public class Reporte {
 
@@ -22,7 +29,9 @@ public class Reporte {
     @Lob
     private String contenido;
 
-    @Column(name = "fecha_generacion")
+    @Builder.Default
+    @NotNull(message = "La fecha de ingreso es obligatoria")
+    @Column(name = "fecha_generacion", columnDefinition = "TIMESTAMP")
     private LocalDateTime fechaGeneracion = LocalDateTime.now();
 
     @ManyToOne
