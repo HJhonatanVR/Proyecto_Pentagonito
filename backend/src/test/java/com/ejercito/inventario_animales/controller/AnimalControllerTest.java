@@ -3,6 +3,8 @@ package com.ejercito.inventario_animales.controller;
 import com.ejercito.inventario_animales.model.Animal;
 import com.ejercito.inventario_animales.service.AnimalService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.time.LocalDateTime;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -32,14 +35,19 @@ public class AnimalControllerTest {
     @Test
     void testCrearAnimal() throws Exception {
         Animal animal = new Animal();
-        animal.setId(1L);
+        animal.setIdAnimal(1L);
         animal.setNombre("Rayo");
+        animal.setFechaIngreso(LocalDateTime.now());  
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule()); // Registrar el módulo para manejar LocalDate
+
 
         when(animalService.saveAnimal(any(Animal.class))).thenReturn(animal);
 
         mockMvc.perform(post("/api/animales")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(new ObjectMapper().writeValueAsString(animal)))
+                .content(objectMapper.writeValueAsString(animal)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.nombre").value("Rayo"));
 
@@ -49,14 +57,14 @@ public class AnimalControllerTest {
     @Test
     void testObtenerAnimalPorId() throws Exception {
         Animal animal = new Animal();
-        animal.setId(1L);
+        animal.setIdAnimal(1L);
         animal.setNombre("Rayo");
 
         when(animalService.getAnimalById(1L)).thenReturn(Optional.of(animal));
 
         mockMvc.perform(get("/api/animales/{id}", 1L))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(1L))
+                .andExpect(jsonPath("$.idAnimal").value(1L))
                 .andExpect(jsonPath("$.nombre").value("Rayo"));
 
         verify(animalService, times(1)).getAnimalById(1L);
@@ -78,11 +86,11 @@ public class AnimalControllerTest {
     @Test
     void testObtenerTodosLosAnimales() throws Exception {
         Animal animal1 = new Animal();
-        animal1.setId(1L);
+        animal1.setIdAnimal(1L);
         animal1.setNombre("Rayo");
 
         Animal animal2 = new Animal();
-        animal2.setId(2L);
+        animal2.setIdAnimal(2L);
         animal2.setNombre("Bolt");
 
         List<Animal> animales = Arrays.asList(animal1, animal2);
