@@ -29,7 +29,7 @@ class AnimalServiceTest {
     @Test
     void testGuardarAnimal() {
         Animal animal = new Animal();
-        animal.setId(1L);
+        animal.setIdAnimal(1L);
         animal.setNombre("Rayo");
 
         when(animalRepository.save(animal)).thenReturn(animal);
@@ -37,7 +37,7 @@ class AnimalServiceTest {
         Animal resultado = animalService.saveAnimal(animal);
 
         assertNotNull(resultado);
-        assertEquals(1L, resultado.getId());
+        assertEquals(1L, resultado.getIdAnimal());
         assertEquals("Rayo", resultado.getNombre());
         verify(animalRepository, times(1)).save(animal);
     }
@@ -45,24 +45,25 @@ class AnimalServiceTest {
     @Test
     void testObtenerAnimalPorId() {
         Animal animal = new Animal();
-        animal.setId(1L);
+        animal.setIdAnimal(1L);
 
         when(animalRepository.findById(1L)).thenReturn(Optional.of(animal));
 
         Optional<Animal> resultado = animalService.getAnimalById(1L);
 
         assertTrue(resultado.isPresent());
-        assertEquals(1L, resultado.get().getId());
+        assertEquals(1L, resultado.get().getIdAnimal());
         verify(animalRepository, times(1)).findById(1L);
     }
 
     @Test
     void testEliminarAnimal() {
-        Long id = 1L;
-        doNothing().when(animalRepository).deleteById(id);
+        Long idAnimal = 1L;
+        doNothing().when(animalRepository).deleteById(idAnimal);
 
-        animalService.deleteAnimal(id);
+        animalService.deleteAnimal(idAnimal);
 
-        verify(animalRepository, times(1)).deleteById(id);
+        verify(animalRepository, times(1)).deleteById(idAnimal);
     }
+
 }

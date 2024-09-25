@@ -63,11 +63,11 @@ class HistorialMedicoServiceTest {
         HistorialMedico historial2 = new HistorialMedico();
         historial2.setIdHistorial(2L);
 
-        when(historialMedicoRepository.findByAnimalId(1L)).thenReturn(Arrays.asList(historial1, historial2));
+        when(historialMedicoRepository.findByAnimal_IdAnimal(1L)).thenReturn(Arrays.asList(historial1, historial2));
 
         List<HistorialMedico> resultados = historialMedicoService.getHistorialMedicoByAnimalId(1L);
 
         assertEquals(2, resultados.size());
-        verify(historialMedicoRepository, times(1)).findByAnimalId(1L);
+        verify(historialMedicoRepository, times(1)).findByAnimal_IdAnimal(1L);
     }
 }
