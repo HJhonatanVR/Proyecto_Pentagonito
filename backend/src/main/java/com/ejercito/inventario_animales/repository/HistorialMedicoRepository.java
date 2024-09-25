@@ -10,5 +10,5 @@ import java.util.List;
 public interface HistorialMedicoRepository extends JpaRepository<HistorialMedico, Long> {
 
     // Buscar historial médico por ID de animal
-    List<HistorialMedico> findByAnimalId(Long id);
+    List<HistorialMedico> findByAnimal_IdAnimal(Long idAnimal);
 }

@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+
 import java.util.List;
 import java.util.Optional;
 
@@ -19,9 +20,13 @@ public class ProveedorController {
 
     // Crear un nuevo proveedor
     @PostMapping
-    public ResponseEntity<Proveedor> crearProveedor(@RequestBody Proveedor proveedor) {
-        Proveedor nuevoProveedor = proveedorService.saveProveedor(proveedor);
-        return new ResponseEntity<>(nuevoProveedor, HttpStatus.CREATED);
+    public ResponseEntity<String> crearProveedor(@RequestBody Proveedor proveedor) {
+        try {
+            Proveedor nuevoProveedor = proveedorService.saveProveedor(proveedor);
+            return new ResponseEntity<>("Proveedor creado con éxito", HttpStatus.CREATED);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     // Obtener un proveedor por su ID

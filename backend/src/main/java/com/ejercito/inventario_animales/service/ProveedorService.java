@@ -1,9 +1,10 @@
 package com.ejercito.inventario_animales.service;
 
-import com.ejercito.inventario_animales.model.Insumo;
+//import com.ejercito.inventario_animales.model.Insumo;
 import com.ejercito.inventario_animales.model.Proveedor;
 import com.ejercito.inventario_animales.repository.ProveedorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,9 +18,12 @@ public class ProveedorService {
 
     // Guardar o actualizar proveedor
     public Proveedor saveProveedor(Proveedor proveedor) {
-        return proveedorRepository.save(proveedor);
+        try {
+            return proveedorRepository.save(proveedor);
+        } catch (DataIntegrityViolationException e) {
+            throw new RuntimeException("El nombre del proveedor ya existe.");
+        }
     }
-
     // Buscar proveedor por ID
     public Optional<Proveedor> getProveedorById(Long id) {
         return proveedorRepository.findById(id);

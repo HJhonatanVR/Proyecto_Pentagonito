@@ -26,7 +26,7 @@ public class HistorialMedicoService {
 
     // Buscar historial médico por ID de animal
     public List<HistorialMedico> getHistorialMedicoByAnimalId(Long idAnimal) {
-        return historialMedicoRepository.findByAnimalId(idAnimal);
+        return historialMedicoRepository.findByAnimal_IdAnimal(idAnimal);
     }
 
     // Eliminar un historial médico por ID
